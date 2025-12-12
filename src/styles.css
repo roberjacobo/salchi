@@ -1,3 +1,19 @@
-/* You can add global styles to this file, and also import other style files */
-
 @import "tailwindcss";
+
+@theme {
+  /* Custom colors */
+  --color-navy: #001F3D;
+  --color-tan: #ED985F;
+  --color-peach: #F7B980;
+  --color-cream: #E6E6E6;
+  --color-dark-bg: #1a1a1a;
+  --color-dark-surface: #2a2a2a;
+}
+
+@variant dark (&:where(.dark, .dark *));
+
+body {
+  font-family: 'Pixelify Sans', sans-serif;
+  -webkit-font-smoothing: none;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}

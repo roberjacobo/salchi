@@ -1,0 +1,12 @@
+:host {
+  display: inline-block;
+  line-height: 0;
+}
+
+.dachshund-logo {
+  // Keep pixel art crisp when scaling
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  height: auto;
+  display: block;
+}

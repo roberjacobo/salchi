@@ -72,7 +72,7 @@ The Express server:
 ### Application Structure
 
 ```
-salchi/
+salchi/                         # Repository root
 ├── src/
 │   ├── app/
 │   │   ├── app.ts              # Root component
@@ -83,10 +83,14 @@ salchi/
 │   ├── main.ts                 # Client entry point
 │   ├── main.server.ts          # Server entry point
 │   └── server.ts               # Express SSR server
-└── dist/                       # Build output
-    └── salchi/
-        ├── browser/            # Client-side bundle
-        └── server/             # SSR bundle
+├── public/                     # Static assets
+├── dist/                       # Build output
+│   └── salchi/
+│       ├── browser/            # Client-side bundle
+│       └── server/             # SSR bundle
+├── angular.json                # Angular CLI configuration
+├── package.json                # Dependencies and scripts
+└── tsconfig.json               # TypeScript configuration
 ```
 
 ### TypeScript Configuration
@@ -124,3 +128,4 @@ All Angular components use the `app` prefix (e.g., `app-component-name`).
 Production builds enforce:
 - Initial bundle: 500kB warning, 1MB error
 - Component styles: 4kB warning, 8kB error
+- Give the instructions and explanation to the user unless he ask you to do it.
