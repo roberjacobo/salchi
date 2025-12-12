@@ -1,28 +1,32 @@
-import { Injectable, signal, effect, PLATFORM_ID, inject } from '@angular/core';
+import { Injectable, signal, effect, PLATFORM_ID, inject, OnDestroy } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
   providedIn: 'root',
 })
-export class Theme {
-  private readonly THEME_KEY = 'theme-preference';
+export class Theme implements OnDestroy {
   private platformId = inject(PLATFORM_ID);
   private isBrowser = isPlatformBrowser(this.platformId);
+  private timeCheckInterval?: ReturnType<typeof setInterval>;
 
   isDarkMode = signal<boolean>(this.getInitialTheme());
 
   constructor() {
-    // Only run browser-specific code in browser
     if (this.isBrowser) {
-      // Apply theme on initialization
       this.applyTheme(this.isDarkMode());
 
-      // Watch for theme changes and persist them
       effect(() => {
         const darkMode = this.isDarkMode();
         this.applyTheme(darkMode);
-        localStorage.setItem(this.THEME_KEY, darkMode ? 'dark' : 'light');
       });
+
+      this.startTimeBasedThemeCheck();
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this.timeCheckInterval) {
+      clearInterval(this.timeCheckInterval);
     }
   }
 
@@ -35,19 +39,27 @@ export class Theme {
   }
 
   private getInitialTheme(): boolean {
-    // Server-side: default to light mode
     if (!this.isBrowser) {
       return false;
     }
 
-    // Check localStorage first
-    const saved = localStorage.getItem(this.THEME_KEY);
-    if (saved) {
-      return saved === 'dark';
-    }
+    return this.isWithinDarkModeHours();
+  }
 
-    // Fall back to system preference
-    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+  private isWithinDarkModeHours(): boolean {
+    const now = new Date();
+    const currentHour = now.getHours();
+
+    return currentHour >= 19 || currentHour < 7;
+  }
+
+  private startTimeBasedThemeCheck(): void {
+    this.timeCheckInterval = setInterval(() => {
+      const shouldBeDark = this.isWithinDarkModeHours();
+      if (this.isDarkMode() !== shouldBeDark) {
+        this.setTheme(shouldBeDark);
+      }
+    }, 60000);
   }
 
   private applyTheme(isDark: boolean): void {
