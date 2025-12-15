@@ -1,0 +1,50 @@
+#grad1 {
+  height: 100vh;
+  background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.8) 40%, rgba(247, 185, 128, 0.7) 70%, rgba(237, 152, 95, 0.8) 100%), url('/images/1.webp');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  transition: all 0.3s ease-in-out;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(135deg, rgba(67, 35, 35, 0.9) 0%, rgba(67, 35, 35, 0.8) 40%, rgba(113, 90, 90, 0.7) 70%, rgba(113, 90, 90, 0.8) 100%);
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  > div {
+    position: relative;
+    z-index: 1;
+  }
+
+  :host-context(.dark) &::before {
+    opacity: 1;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .dark #grad1::before {
+    opacity: 1;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .dark #grad1::before {
+    opacity: 1;
+  }
+}
